@@ -4,7 +4,9 @@
 
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
-
+    <modules>
+        <module>server</module>
+    </modules>
     <groupId>com.jdy</groupId>
     <artifactId>angel</artifactId>
     <version>0.0.1</version>
@@ -12,6 +14,7 @@
     <description>Spring cloud 微服务架构的学习与实践</description>
 
     <properties>
+        <lombok.version>1.18.24</lombok.version>
 
         <mybatis-plus.version>3.4.3.4</mybatis-plus.version>
 
@@ -43,25 +46,34 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
             <optional>true</optional>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-logging</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-logging</artifactId>-->
+<!--        </dependency>-->
 
-        <!--单元测试-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
+<!--        &lt;!&ndash;单元测试&ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-test</artifactId>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
     </dependencies>
 
     <!--依赖管理，用于管理spring-cloud的依赖，其中Hoxton.SR9是版本号-->
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
