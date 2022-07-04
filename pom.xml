@@ -14,6 +14,7 @@
     <description>Spring cloud 微服务架构的学习与实践</description>
 
     <properties>
+        <boot-jar-output>target</boot-jar-output>
         <lombok.version>1.18.24</lombok.version>
 
         <mybatis-plus.version>3.4.3.4</mybatis-plus.version>
@@ -49,18 +50,6 @@
             <version>${lombok.version}</version>
             <optional>true</optional>
         </dependency>
-
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-logging</artifactId>-->
-<!--        </dependency>-->
-
-<!--        &lt;!&ndash;单元测试&ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-test</artifactId>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
     </dependencies>
 
     <!--依赖管理，用于管理spring-cloud的依赖，其中Hoxton.SR9是版本号-->
@@ -126,6 +115,7 @@
     </dependencyManagement>
 
     <build>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
