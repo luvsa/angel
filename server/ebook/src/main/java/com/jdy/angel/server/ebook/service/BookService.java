@@ -1,7 +1,6 @@
 package com.jdy.angel.server.ebook.service;
 
-import com.jdy.angel.server.ebook.core.Result;
-import com.jdy.angel.server.ebook.core.Success;
+import com.sun.net.httpserver.Authenticator.Success;
 
 import java.util.concurrent.Flow.Subscriber;
 

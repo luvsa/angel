@@ -6,6 +6,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>server</module>
+        <module>common</module>
     </modules>
     <groupId>com.jdy</groupId>
     <artifactId>angel</artifactId>
@@ -71,6 +72,12 @@
                 <scope>import</scope>
             </dependency>
 
+            <dependency>
+                <groupId>com.jdy.angel</groupId>
+                <artifactId>common-utils</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
             <!--   自动生成代码模板引擎       -->
             <dependency>
                 <groupId>org.apache.velocity</groupId>
@@ -111,6 +118,8 @@
                 <artifactId>mapstruct-processor</artifactId>
                 <version>${mapstruct.version}</version>
             </dependency>
+
+
         </dependencies>
     </dependencyManagement>
 

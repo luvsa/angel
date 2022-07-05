@@ -2,7 +2,7 @@ package com.jdy.angel.server.ebook.core;
 
 /**
  * @author Aglet
- * @create 2022/7/3 21:20
+ * @create 2022/7/5 12:30
  */
-public interface Result {
+public interface Mark {
 }

@@ -1,9 +1,10 @@
 package com.jdy.angel.server.ebook.service.impl;
 
-import com.jdy.angel.server.ebook.core.AbstractReptilian;
 import com.jdy.angel.server.ebook.service.BookService;
 import com.jdy.angel.server.ebook.service.ReptileService;
 import org.springframework.stereotype.Service;
+
+import java.net.URI;
 
 /**
  * Reptile reptilian
@@ -11,10 +12,13 @@ import org.springframework.stereotype.Service;
  * @create 2022/7/3 19:43
  */
 @Service
-public class ReptileServiceImpl extends AbstractReptilian implements ReptileService {
+public class ReptileServiceImpl  implements ReptileService {
 
     public ReptileServiceImpl(BookService bookService) {
-        this.subscriber = bookService;
     }
 
+    @Override
+    public void start(URI domain) {
+
+    }
 }

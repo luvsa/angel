@@ -1,41 +1,34 @@
 package com.jdy.angel.server.ebook.core;
 
-
 import java.util.Map;
 import java.util.StringJoiner;
 
 /**
- * Block Segment section
- *
  * @author Aglet
- * @create 2022/7/3 21:49
+ * @create 2022/7/4 15:14
  */
-public class Label extends Block {
+public class Meta extends  Block {
 
-    private final String name;
+    final static String SIGN = "meta";
 
-    public Label(String name, Map<String, String> map) {
+    public Meta(Map<String, String> map) {
         super(map);
-        this.name = name;
     }
 
     @Override
-    String getName() {
-        if (isFinished()){
-            return name.substring(1);
-        }
-        return name;
+    public String getName() {
+        return SIGN;
     }
 
     @Override
     public boolean isFinished() {
-        return name.startsWith("/");
+        return true;
     }
 
     @Override
     public String toString() {
         var joiner = new StringJoiner(" ", "<", ">");
-        joiner.add(name);
+        joiner.add(SIGN);
         attributes.forEach((s, s2) -> joiner.add(s + "=" + s2));
         return joiner.toString();
     }
