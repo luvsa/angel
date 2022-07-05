@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 public interface Resolver {
 
     static void accept(String html, Consumer<Object> consumer) {
-        new Tokenizer(html).get();
+
     }
 
 }

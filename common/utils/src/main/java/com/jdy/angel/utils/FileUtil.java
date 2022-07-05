@@ -1,11 +1,11 @@
-package com.jdy.angel;
+package com.jdy.angel.utils;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -52,26 +52,7 @@ public final class FileUtil {
      * @return Class
      */
     private static Class<?> getCallerClass() {
-        //  Reflection.getCallerClass() 的替代方案
-        var flag = false;
-        var clazz = FileUtil.class;
-        var name = clazz.getName();
-        var elements = Thread.currentThread().getStackTrace();
-        for (StackTraceElement item : elements) {
-            var className = item.getClassName();
-            if (Objects.equals(className, name)) {
-                flag = true;
-                continue;
-            }
-            if (flag) {
-                try {
-                    return Class.forName(className);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-        throw new RuntimeException();
+        return ReflectUtil.getCallerClass(FileUtil.class);
     }
 
     /**
@@ -93,17 +74,22 @@ public final class FileUtil {
 
     public static <R> List<R> readAsList(Path path, Function<String, R> function) {
         var list = new ArrayList<R>();
-        read(path, s -> list.add(function.apply(s)));
+        read(path, s -> {
+            var item = function.apply(s);
+            if (item != null) {
+                list.add(item);
+            }
+        });
         return list;
     }
 
-    public static String readString(Path path){
+    public static String readString(Path path) {
         var builder = new StringBuilder();
         read(path, builder::append);
         return builder.toString();
     }
 
-    public static String readString(File path){
+    public static String readString(File path) {
         var builder = new StringBuilder();
         read(path, builder::append);
         return builder.toString();
@@ -119,7 +105,12 @@ public final class FileUtil {
 
     public static void read(File file, Consumer<String> consumer) {
         try (var access = new RandomAccessFile(file, "r")) {
-            read0(access::readLine, consumer);
+            read0(access::readLine, s -> {
+                // 处理中文乱码问题
+                var bytes = s.getBytes(StandardCharsets.ISO_8859_1);
+                var current = new String(bytes, StandardCharsets.UTF_8);
+                consumer.accept(current);
+            });
         } catch (IOException e) {
             throw new IllegalArgumentException("Read file[" + file + "] failure!", e);
         }
@@ -138,7 +129,8 @@ public final class FileUtil {
             if (s == null) {
                 break;
             }
-            consumer.accept(s);
+            // 加上换行
+            consumer.accept(s + '\n');
         } while (true);
     }
 

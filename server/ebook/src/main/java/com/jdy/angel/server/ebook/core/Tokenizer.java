@@ -1,126 +1,81 @@
 package com.jdy.angel.server.ebook.core;
 
-import java.util.*;
-import java.util.function.Consumer;
+import java.util.Iterator;
+import java.util.Stack;
 
 
 /**
  * @author Aglet
  * @create 2022/7/3 21:39
  */
-class Tokenizer implements Iterable<Section> {
-    private final Iterator<Section> iterator;
+class Tokenizer implements Iterable<Section>, Iterator<Section> {
+
+    private final String code;
+
+    private int index;
+
+    private boolean finished;
 
     /**
      * code 栈
      */
     private final Stack<Segment> stack;
 
-    private Consumer<Label> consumer;
-
-    private int index;
-
-    private int cursor;
-
     public Tokenizer(String html) {
-        this.iterator = new Sections(html);
+        this.code = html;
         stack = new Stack<>();
-    }
-
-    public Segment get() {
-//        do {
-//            var next = next();
-//            if (next == END) {
-//                break;
-//            }
-//
-//            if (next == null) {
-//                continue;
-//            }
-//
-//            var block = next.create();
-//            if (stack.isEmpty()) {
-//                stack.push(block);
-//                continue;
-//            }
-//
-//            if (block.isFinished()) {
-//                var peek = stack.peek();
-//                peek.merge(block);
-//                continue;
-//            }
-
-//            stack.push(block);
-//        } while (true);
-        return null;
     }
 
     @Override
     public Iterator<Section> iterator() {
-        return this.iterator;
+        return this;
     }
 
+    @Override
+    public boolean hasNext() {
+        return !finished;
+    }
 
-//    private String getText() {
-//        if (index == cursor) {
-//            index++;
-//            return Constant.EMPTY;
-//        }
-//        var sub = html.substring(index, cursor);
-//        index = cursor + 1;
-//        return sub;
-//    }
-
-    /**
-     * 遍历器
-     */
-    private static class Sections implements Iterator<Section> {
-
-        private final static String PREFIX = "<";
-
-        private final static String SUFFIX = ">";
-
-        private final String code;
-
-        private int index;
-
-        private boolean finished;
-
-        private Sections(String code) {
-            this.code = code;
+    @Override
+    public Section next() {
+        if (finished) {
+            throw new RuntimeException("没有其他元素");
         }
 
-        @Override
-        public boolean hasNext() {
-            return !finished;
+        var from = code.indexOf(Constant.PREFIX, index);
+        if (from < 0) {
+            throw new RuntimeException("数组越界： " + from);
         }
 
-        @Override
-        public Section next() {
-            if (finished) {
-                throw new RuntimeException("没有其他元素");
-            }
+        // txt 文本
+        var text = code.substring(index, from);
+        var temp = code.indexOf(Constant.PREFIX, from + 1);
+        var to = code.indexOf(Constant.SUFFIX, from);
+        if (to > from) {
+            finished = temp < 0;
+            var sub = code.substring(from + 1, to);
+            this.index = to + 1;
+            var name = getName(sub.strip());
 
-            var from = code.indexOf(PREFIX, index);
-            if (from < 0) {
-                throw new RuntimeException("数组越界： " + from);
-            }
+            // 1. 注释问题
+            // 2. script 问题
+            // 3. style 问题
 
-            // txt 文本
-            var text = code.substring(index, from);
-            var temp = code.indexOf(PREFIX, from + 1);
-            var to = code.indexOf(SUFFIX, from);
-            if (to > from) {
-                finished = temp < 0;
-                var sub = code.substring(from + 1, to);
-                this.index = to + 1;
-                if (temp > to || temp < 0) {
-                    return new Section(text, sub);
-                }
-                //  TODO 需要避开 <script> 代码
-                throw new RuntimeException("错误语法： " + sub);
+
+            if (temp > to || temp < 0) {
+                return new Section(text, sub);
             }
-            throw new IllegalArgumentException();
+            //  TODO 需要避开 <script> 代码
+            throw new RuntimeException("错误语法： " + sub);
         }
+        throw new IllegalArgumentException();
+    }
+
+    private String getName(String txt) {
+        var index = txt.indexOf(Constant.BLANK);
+        if (index < 0) {
+            return txt;
+        }
+        return txt.substring(0, index);
     }
 }

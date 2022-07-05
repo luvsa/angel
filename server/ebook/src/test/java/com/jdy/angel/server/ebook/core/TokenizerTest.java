@@ -1,7 +1,6 @@
 package com.jdy.angel.server.ebook.core;
 
-import com.jdy.angel.FileUtil;
-import jdk.internal.reflect.CallerSensitive;
+import com.jdy.angel.utils.FileUtil;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -41,10 +40,8 @@ class TokenizerTest {
 //        System.out.println(label);
     }
 
-
     @ParameterizedTest
     @ValueSource(strings = {"index.html"})
-    @CallerSensitive
     void read(String file) {
         var code = FileUtil.readResourceAsString(file);
         var tokenizer = new Tokenizer(code);

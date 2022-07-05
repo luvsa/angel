@@ -73,6 +73,12 @@
             </dependency>
 
             <dependency>
+                <artifactId>vary</artifactId>
+                <groupId>org.luvsa</groupId>
+                <version>0.0.1</version>
+            </dependency>
+
+            <dependency>
                 <groupId>com.jdy.angel</groupId>
                 <artifactId>common-utils</artifactId>
                 <version>${project.version}</version>
