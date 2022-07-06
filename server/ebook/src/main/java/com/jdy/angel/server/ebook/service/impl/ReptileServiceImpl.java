@@ -4,8 +4,6 @@ import com.jdy.angel.server.ebook.service.BookService;
 import com.jdy.angel.server.ebook.service.ReptileService;
 import org.springframework.stereotype.Service;
 
-import java.net.URI;
-
 /**
  * Reptile reptilian
  * @author Aglet
@@ -17,8 +15,5 @@ public class ReptileServiceImpl  implements ReptileService {
     public ReptileServiceImpl(BookService bookService) {
     }
 
-    @Override
-    public void start(URI domain) {
 
-    }
 }

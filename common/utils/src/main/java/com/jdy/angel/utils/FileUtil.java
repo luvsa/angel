@@ -2,10 +2,14 @@ package com.jdy.angel.utils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -117,7 +121,7 @@ public final class FileUtil {
     }
 
     public static void read(BufferedReader reader, Consumer<String> consumer) throws IOException {
-        read0(reader::readLine, consumer);
+        read0(reader::readLine,consumer);
     }
 
     private static void read0(Reader reader, Consumer<String> consumer) throws IOException {
@@ -132,6 +136,49 @@ public final class FileUtil {
             // 加上换行
             consumer.accept(s + '\n');
         } while (true);
+    }
+
+    public static void scanClass(Consumer<Class<?>> consumer) {
+        scanClass(getCallerClass(), consumer);
+    }
+
+    public static void scanClass(Class<?> clazz, Consumer<Class<?>> consumer) {
+        scan(clazz, (from, path) -> {
+            var to = path.getNameCount();
+            var sub = path.subpath(from, to);
+            var s = sub.toString();
+            var name = s.replace("\\", ".");
+            try {
+                var index = name.lastIndexOf(".");
+                var className = name.substring(0, index);
+                var clazz1 = Class.forName(className);
+                consumer.accept(clazz1);
+            } catch (ClassNotFoundException e) {
+                System.err.println(name);
+            }
+        });
+    }
+
+    public static void scan(Class<?> clazz, BiConsumer<Integer, Path> consumer) {
+        var domain = clazz.getProtectionDomain();
+        var source = domain.getCodeSource();
+        var location = source.getLocation();
+        var file = new File(location.getPath());
+        var root = file.getPath();
+        var path = Path.of(root);
+        var from = path.getNameCount();
+        var replace = clazz.getPackageName().replace(".", File.separator);
+        try {
+            Files.walkFileTree(path.resolve(replace), new SimpleFileVisitor<>() {
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    consumer.accept(from, file);
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private interface Reader {
