@@ -1,6 +1,6 @@
 package com.jdy.angel.server.ebook.core.labels;
 
-import com.jdy.angel.server.ebook.core.Kind;
+import com.jdy.angel.server.ebook.core.Constant;
 import com.jdy.angel.server.ebook.core.Node;
 
 
@@ -10,17 +10,26 @@ import com.jdy.angel.server.ebook.core.Node;
  */
 public interface Label {
 
+    static Label of(String code) {
+        var index = code.indexOf(Constant.BLANK);
+        if (index < 0) {
+            return of(code, Constant.EMPTY);
+        }
+        return of(code.substring(0, index).strip(), code.substring(index).strip());
+    }
+
     static Label of(String name, String property) {
         return Util.create(name, property);
     }
 
     default void setProperty(String property) {
+
     }
 
     default void setName(String name) {
     }
 
-    default boolean isOff() {
+    default boolean isFinished() {
         return false;
     }
 
@@ -41,9 +50,23 @@ public interface Label {
 
     String getSuffix();
 
-    Kind match(Label label);
+    boolean match(Label label);
+
+    default boolean match(String name) {
+        return false;
+    }
 
     default String get(String key) {
         return null;
+    }
+
+    Type getType();
+
+    default int getChildTabs(int times) {
+        return times + 1;
+    }
+
+    default String getDelimiter(){
+        return "\n";
     }
 }

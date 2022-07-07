@@ -31,12 +31,20 @@ public class Doctype extends Block {
     }
 
     @Override
+    public Type getType() {
+        return Type.OPEN;
+    }
+
+    @Override
+    public int getChildTabs(int times) {
+        return 0;
+    }
+
+    @Override
     public String toString() {
         var joiner = new StringJoiner(" ", "<", ">");
         joiner.add(name);
         joiner.add(attr);
         return joiner.toString();
     }
-
-
 }

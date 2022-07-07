@@ -13,4 +13,6 @@ public interface Constant {
     String PREFIX = "<";
     String SUFFIX = ">";
 
+    String TAB = "\t";
+
 }

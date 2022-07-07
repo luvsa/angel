@@ -8,7 +8,12 @@ package com.jdy.angel.server.ebook.core.labels;
 public class Meta extends Mark {
 
     @Override
-    public boolean isOff() {
+    public boolean isFinished() {
         return true;
+    }
+
+    @Override
+    public Type getType() {
+        return Type.END;
     }
 }

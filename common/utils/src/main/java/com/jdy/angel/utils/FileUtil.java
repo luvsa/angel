@@ -1,7 +1,8 @@
 package com.jdy.angel.utils;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -43,11 +44,15 @@ public final class FileUtil {
     public static String readResourceAsString(String name) {
         var builder = new StringBuilder();
         try {
-            read(readResourceAsStream(name), builder::append);
+            readResource(name, builder::append);
             return builder.toString();
         } catch (Exception e) {
             throw new RuntimeException("读取文件：" + name + "失败！");
         }
+    }
+
+    public static void readResource(String name, Consumer<String> consumer) {
+        read(readResourceAsStream(name), consumer);
     }
 
     /**
@@ -99,6 +104,16 @@ public final class FileUtil {
         return builder.toString();
     }
 
+    public static void read(URL url, Consumer<String> consumer) {
+        try {
+            var uri = url.toURI();
+            var file = new File(uri);
+            read(file, consumer);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static void read(Path path, Consumer<String> consumer) {
         try (var reader = Files.newBufferedReader(path)) {
             read(reader, consumer);
@@ -109,19 +124,14 @@ public final class FileUtil {
 
     public static void read(File file, Consumer<String> consumer) {
         try (var access = new RandomAccessFile(file, "r")) {
-            read0(access::readLine, s -> {
-                // 处理中文乱码问题
-                var bytes = s.getBytes(StandardCharsets.ISO_8859_1);
-                var current = new String(bytes, StandardCharsets.UTF_8);
-                consumer.accept(current);
-            });
+            read0(access::readLine, consumer);
         } catch (IOException e) {
             throw new IllegalArgumentException("Read file[" + file + "] failure!", e);
         }
     }
 
     public static void read(BufferedReader reader, Consumer<String> consumer) throws IOException {
-        read0(reader::readLine,consumer);
+        read0(reader::readLine, consumer);
     }
 
     private static void read0(Reader reader, Consumer<String> consumer) throws IOException {
@@ -134,7 +144,7 @@ public final class FileUtil {
                 break;
             }
             // 加上换行
-            consumer.accept(s + '\n');
+            consumer.accept(s);
         } while (true);
     }
 

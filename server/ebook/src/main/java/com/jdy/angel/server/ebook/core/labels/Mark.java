@@ -1,8 +1,9 @@
 package com.jdy.angel.server.ebook.core.labels;
 
-import com.jdy.angel.server.ebook.core.Kind;
-
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Stack;
+import java.util.StringJoiner;
 
 /**
  * @author Aglet
@@ -53,7 +54,7 @@ class Mark extends Block {
                 var value = property.substring(index + 1, ++from).strip();
                 attributes.put(key, value);
             } catch (Exception e) {
-                System.out.println(property);
+//                System.out.println(property);
             }
 
         } while (true);
@@ -64,16 +65,6 @@ class Mark extends Block {
         return toString();
     }
 
-
-    @Override
-    public Kind match(Label label) {
-        if (label instanceof Mark mark) {
-            if (mark.finished) {
-                return Kind.half;
-            }
-        }
-        return super.match(label);
-    }
 
     @Override
     public String toString() {
@@ -93,5 +84,13 @@ class Mark extends Block {
             return null;
         }
         return s.substring(1, s.length() - 1);
+    }
+
+    @Override
+    public Type getType() {
+        if (finished){
+            return Type.END;
+        }
+        return super.getType();
     }
 }

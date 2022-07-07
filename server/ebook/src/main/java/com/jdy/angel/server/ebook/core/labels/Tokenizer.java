@@ -10,14 +10,10 @@ import java.util.Iterator;
  */
 class Tokenizer implements Iterable<Tuple>, Iterator<Tuple> {
 
-    private final String code;
-
-    private int index;
-
     private boolean finished;
 
     Tokenizer(String code) {
-        this.code = code;
+//        this.code = code;
     }
 
     @Override
@@ -32,47 +28,49 @@ class Tokenizer implements Iterable<Tuple>, Iterator<Tuple> {
 
     @Override
     public Tuple next() {
-        if (finished) {
-            throw new RuntimeException("没有其他元素");
-        }
-        var from = code.indexOf(Constant.PREFIX, index);
-        if (from < 0) {
-            throw new RuntimeException("数组越界： " + from);
-        }
-        var to = code.indexOf(Constant.SUFFIX, from);
-        if (to > from) {
-            return create(from, from + 1, to);
-        }
-        throw new IllegalArgumentException();
+//        if (finished) {
+//            throw new RuntimeException("没有其他元素");
+//        }
+//        var from = code.indexOf(Constant.PREFIX, index);
+//        if (from < 0) {
+//            throw new RuntimeException("数组越界： " + from);
+//        }
+//        var to = code.indexOf(Constant.SUFFIX, from);
+//        if (to > from) {
+//            return create(from, from + 1, to);
+//        }
+//        throw new IllegalArgumentException();
+        return null;
     }
 
     private Tuple create(int from, int mid, int to) {
-        var sub = code.substring(from + 1, to);
-
-        // 标签名称
-        var name = getName(sub.strip());
-        var property = sub.substring(name.length());
-
-        var label = Label.of(name, property);
-        var nex = fetch(mid, label);
-        finished = nex < 0;
-        if (finished) {
-            //<>
-            this.index = to + 1;
-            return new Singlet(label);
-        }
-
-        if (nex > to) {
-            // <> <
-            var strip = code.substring(to + 1, nex);
-            this.index = nex;
-            if (strip.isBlank()) {
-                return new Singlet(label);
-            }
-            return new Textile(label, strip);
-        }
-
-        return create(from, nex + 1, to);
+//        var sub = code.substring(from + 1, to);
+//
+//        // 标签名称
+//        var name = getName(sub.strip());
+//        var property = sub.substring(name.length());
+//
+//        var label = Label.of(name, property);
+//        var nex = fetch(mid, label);
+//        finished = nex < 0;
+//        if (finished) {
+//            //<>
+//            this.index = to + 1;
+//            return new Singlet(label);
+//        }
+//
+//        if (nex > to) {
+//            // <> <
+//            var strip = code.substring(to + 1, nex);
+//            this.index = nex;
+//            if (strip.isBlank()) {
+//                return new Singlet(label);
+//            }
+//            return new Textile(label, strip);
+//        }
+//
+//        return create(from, nex + 1, to);
+        return null;
     }
 
     private int fetch(int mid, Label label) {
@@ -93,7 +91,8 @@ class Tokenizer implements Iterable<Tuple>, Iterator<Tuple> {
 //                stack.push(from);
 //            } while (true);
 //        }
-        return code.indexOf(Constant.PREFIX, mid);
+//        return code.indexOf(Constant.PREFIX, mid);
+        return 0;
     }
 
     private String getName(String txt) {

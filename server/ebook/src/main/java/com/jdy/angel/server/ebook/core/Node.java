@@ -21,8 +21,16 @@ public abstract class Node {
         return node;
     }
 
-    public Kind match(Label label) {
+    public boolean match(Label label) {
         return getValue().match(label);
+    }
+
+    public void add(String txt) {
+        if (txt.isBlank()) {
+            return;
+        }
+        var text = new Text(txt);
+        add(text.toNode());
     }
 
     public void add(Node node) {
@@ -38,16 +46,25 @@ public abstract class Node {
 
     protected abstract Label getValue();
 
-
     @Override
     public String toString() {
+        return toString(0);
+    }
+
+    public String toString(int times) {
+        var tab = Constant.TAB.repeat(times);
         var value = getValue();
         if (children == null || children.isEmpty()) {
-            return value.toString();
+            return tab + value.toString();
         }
-        var joiner = new StringJoiner("\n", value.getPrefix() + "\n", "\n" + value.getSuffix());
+
+        var delimiter = value.getDelimiter();
+        var prefix = tab + value.getPrefix() + delimiter;
+        var suffix = delimiter + (delimiter.isEmpty() ? delimiter : tab) + value.getSuffix();
+        var joiner = new StringJoiner(delimiter, prefix, suffix);
+        var next = value.getChildTabs(times);
         for (var child : children) {
-            joiner.add(child.toString());
+            joiner.add(child.toString(delimiter.isEmpty() ? 0 : next));
         }
         return joiner.toString();
     }

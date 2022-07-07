@@ -16,8 +16,8 @@ public interface Tuple {
         return NONE;
     }
 
-    static Iterable<Tuple> iterable(String code) {
-        return new Tokenizer(code);
-    }
+//    static Iterable<Tuple> iterable(String code) {
+//        return new Tokenizer(code);
+//    }
 
 }

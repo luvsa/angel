@@ -1,6 +1,6 @@
 package com.jdy.angel.server.ebook.core.labels;
 
-import com.jdy.angel.server.ebook.core.Kind;
+import com.jdy.angel.utils.ArrayUtil;
 
 import java.util.Objects;
 
@@ -23,18 +23,12 @@ abstract class Block implements Label {
     }
 
     @Override
-    public Kind match(Label label) {
+    public boolean match(Label label) {
         if (label instanceof Block other) {
             var name = other.getName();
-            if (Objects.equals(name, this.name)) {
-                return Kind.matched;
-            }
+            return Objects.equals(name, this.name);
         }
-
-        if (this instanceof Head && label instanceof Meta) {
-            return Kind.half;
-        }
-        return Kind.Unmatched;
+        return false;
     }
 
     @Override
@@ -43,7 +37,7 @@ abstract class Block implements Label {
     }
 
     @Override
-    public boolean isOff() {
+    public boolean isFinished() {
         return name.startsWith("/");
     }
 
@@ -52,5 +46,26 @@ abstract class Block implements Label {
             return name.substring(1);
         }
         return name;
+    }
+
+    @Override
+    public boolean match(String name) {
+        return Objects.equals(getName(), name);
+    }
+
+    @Override
+    public Type getType() {
+        if (isFinished()) {
+            return Type.CLOSE;
+        }
+        return Type.OPEN;
+    }
+
+    @Override
+    public String getDelimiter() {
+        if (ArrayUtil.has(this::match, "a", "title", "li", "span")) {
+            return "";
+        }
+        return Label.super.getDelimiter();
     }
 }

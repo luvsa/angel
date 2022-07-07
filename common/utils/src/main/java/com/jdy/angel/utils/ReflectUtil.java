@@ -1,5 +1,7 @@
 package com.jdy.angel.utils;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Objects;
 
 /**
@@ -11,7 +13,7 @@ public final class ReflectUtil {
     private ReflectUtil() {
     }
 
-    static Class<?> getCallerClass(Class<?> clazz) {
+    public static Class<?> getCallerClass(Class<?> clazz) {
         //  Reflection.getCallerClass() 的替代方案
         var flag = false;
         var name = clazz.getName();
@@ -33,4 +35,14 @@ public final class ReflectUtil {
         throw new RuntimeException();
     }
 
+    public static Method search(String prefix, Field field) {
+        var name = field.getName();
+        var method = prefix + StringUtil.capitalize(name);
+        var aClass = field.getDeclaringClass();
+        try {
+            return aClass.getMethod(method, field.getType());
+        } catch (NoSuchMethodException e) {
+            return null;
+        }
+    }
 }

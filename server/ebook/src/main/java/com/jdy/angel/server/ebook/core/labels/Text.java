@@ -1,7 +1,5 @@
 package com.jdy.angel.server.ebook.core.labels;
 
-import com.jdy.angel.server.ebook.core.Kind;
-
 /**
  * @author Aglet
  * @create 2022/7/5 19:01
@@ -30,12 +28,22 @@ public class Text implements Label {
     }
 
     @Override
-    public Kind match(Label label) {
-        return Kind.Unmatched;
+    public boolean match(Label label) {
+        return false;
+    }
+
+    @Override
+    public Type getType() {
+        return Type.UNKNOWN;
     }
 
     @Override
     public String toString() {
         return txt;
+    }
+
+    @Override
+    public String getDelimiter() {
+        return "";
     }
 }
