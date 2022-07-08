@@ -6,6 +6,9 @@ package com.jdy.angel.utils;
  */
 public class StringUtil {
 
+    private StringUtil() {
+    }
+
     public static String uncapitalize(String str) {
         return changeFirstCharacterCase(str, false);
     }

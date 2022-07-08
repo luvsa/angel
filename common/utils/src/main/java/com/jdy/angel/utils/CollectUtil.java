@@ -7,8 +7,9 @@ import java.util.function.Predicate;
  * @author Aglet
  * @create 2022/7/5 15:20
  */
-public class CollectUtil {
+public final class CollectUtil {
 
+    private CollectUtil() {}
 
     /**
      * 判断 元素中 {true:是否存在} | {false:全部都} 满足指定条件

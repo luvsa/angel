@@ -6,6 +6,10 @@ package com.jdy.angel.server.ebook.core;
  */
 class Util {
 
-    static final ParserImpl DEFAULT = new ParserImpl();
+    static final Tokenizer DEFAULT = new Tokenizer();
+
+    static final Parser RESOURCE = new Resource();
+
+    static final Parser REMOTE = new Remote();
 
 }

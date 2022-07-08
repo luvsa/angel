@@ -6,11 +6,25 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * @author Aglet
  * @create 2022/7/5 20:05
  */
 class TokenizerTest {
+
+    @ParameterizedTest
+    @ValueSource(strings = {"https://www.haobiquge.com/read/44822/"})
+    void remote(String url) throws ExecutionException, InterruptedException {
+        var parser = Parser.fromRemote(url);
+        parser.resolve(node -> {
+            System.out.println(node);
+        });
+
+
+    }
+
 
     @Test
     void start() {
@@ -27,33 +41,15 @@ class TokenizerTest {
                 </head>      
                 """;
         var node = Parser.resolve(code);
-
-//        var tokenizer = new Tokenizer(code);
-//        for (var item : tokenizer) {
-//            System.out.println(item);
-//        }
+        System.out.println(node);
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"index.html"})
     void read(String file) {
         var parser = Parser.fromResource(file);
-        var node = parser.get();
-        System.out.println(node);
-
-//
-//        FileUtil.readResource(file, new Consumer<String>() {
-//            @Override
-//            public void accept(String s) {
-//                System.out.println(s);
-//            }
-//        });
-
-
-//
-//        var tokenizer = new Tokenizer(code);
-//        for (var item : tokenizer) {
-//            System.out.println(item);
-//        }
+        parser.resolve(node -> {
+            System.out.println(node);
+        });
     }
 }

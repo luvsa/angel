@@ -1,6 +1,7 @@
 package com.jdy.angel.utils;
 
 import java.io.*;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.FileVisitResult;
@@ -15,6 +16,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
+ * 文件操作工具
+ *
  * @author Aglet
  * @create 2022/7/5 13:28
  */
@@ -51,6 +54,12 @@ public final class FileUtil {
         }
     }
 
+    /**
+     * 读取资源目录下的指定文件
+     *
+     * @param name     指定文件名称
+     * @param consumer 文件内容处理器
+     */
     public static void readResource(String name, Consumer<String> consumer) {
         read(readResourceAsStream(name), consumer);
     }
@@ -68,7 +77,7 @@ public final class FileUtil {
      * 遍历文件流
      *
      * @param stream   文件流
-     * @param consumer 消费器
+     * @param consumer  文件内容处理器
      */
     public static void read(InputStream stream, Consumer<String> consumer) {
         if (stream == null) {
@@ -92,13 +101,13 @@ public final class FileUtil {
         return list;
     }
 
-    public static String readString(Path path) {
+    public static String readAsString(Path path) {
         var builder = new StringBuilder();
         read(path, builder::append);
         return builder.toString();
     }
 
-    public static String readString(File path) {
+    public static String readAsString(File path) {
         var builder = new StringBuilder();
         read(path, builder::append);
         return builder.toString();
@@ -107,11 +116,16 @@ public final class FileUtil {
     public static void read(URL url, Consumer<String> consumer) {
         try {
             var uri = url.toURI();
-            var file = new File(uri);
-            read(file, consumer);
+            read(uri, consumer);
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static void read(URI uri, Consumer<String> consumer) {
+        // jar 包文件问题
+        var file = new File(uri);
+        read(file, consumer);
     }
 
     public static void read(Path path, Consumer<String> consumer) {
@@ -123,11 +137,7 @@ public final class FileUtil {
     }
 
     public static void read(File file, Consumer<String> consumer) {
-        try (var access = new RandomAccessFile(file, "r")) {
-            read0(access::readLine, consumer);
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Read file[" + file + "] failure!", e);
-        }
+        read(file.toPath(), consumer);
     }
 
     public static void read(BufferedReader reader, Consumer<String> consumer) throws IOException {
