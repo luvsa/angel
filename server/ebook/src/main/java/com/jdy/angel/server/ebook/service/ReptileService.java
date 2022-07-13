@@ -1,6 +1,6 @@
 package com.jdy.angel.server.ebook.service;
 
-import org.springframework.lang.NonNull;
+import com.jdy.angel.server.ebook.core.net.Sender;
 
 /**
  * 爬虫服务
@@ -8,9 +8,8 @@ import org.springframework.lang.NonNull;
  * @author Aglet
  * @create 2022/7/3 19:41
  */
-public interface ReptileService {
+public interface ReptileService extends Sender {
 
-   default void start(@NonNull String domain){
-//        start(URI.create(domain));
-   }
+
+
 }

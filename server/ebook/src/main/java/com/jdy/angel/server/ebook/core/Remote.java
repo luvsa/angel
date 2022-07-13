@@ -7,7 +7,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
-import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
 /**
@@ -46,18 +45,12 @@ class Remote implements Parser {
                 .build();
 
         var handler = HttpResponse.BodyHandlers.ofInputStream();
-        var future = client.sendAsync(request, handler).whenComplete((response, throwable) -> {
+        client.sendAsync(request, handler).whenCompleteAsync((response, throwable) -> {
             if (throwable == null) {
                 FileUtil.read(response.body(), tokenizer);
                 consumer.accept(tokenizer.get());
             }
             throw new RuntimeException(throwable);
         });
-
-        try {
-           var inputStreamHttpResponse = future.get();
-        } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

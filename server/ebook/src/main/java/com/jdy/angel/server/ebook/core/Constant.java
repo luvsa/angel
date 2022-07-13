@@ -6,8 +6,11 @@ package com.jdy.angel.server.ebook.core;
  */
 public interface Constant {
 
+    String EXTENSION = ".html";
+
     String EMPTY = "";
     String BLANK = " ";
+
     String TEXT = "text";
 
     String PREFIX = "<";
@@ -15,4 +18,8 @@ public interface Constant {
 
     String TAB = "\t";
 
+    String DIV = "/";
+
+    String REMARK_LEFT = "!--";
+    String REMARK_RIGHT = "--";
 }

@@ -1,10 +1,12 @@
 package com.jdy.angel.server.ebook.core;
 
 import com.jdy.angel.server.ebook.core.labels.Label;
+import com.jdy.angel.server.ebook.core.labels.Mark;
 import com.jdy.angel.server.ebook.core.labels.Text;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.StringJoiner;
 
 /**
@@ -41,6 +43,7 @@ public abstract class Node {
         if (children == null) {
             children = new ArrayList<>();
         }
+//        node.getValue().register(ids);
         children.add(node);
     }
 
@@ -57,7 +60,6 @@ public abstract class Node {
         if (children == null || children.isEmpty()) {
             return tab + value.toString();
         }
-
         var delimiter = value.getDelimiter();
         var prefix = tab + value.getPrefix() + delimiter;
         var suffix = delimiter + (delimiter.isEmpty() ? delimiter : tab) + value.getSuffix();
@@ -67,5 +69,45 @@ public abstract class Node {
             joiner.add(child.toString(delimiter.isEmpty() ? 0 : next));
         }
         return joiner.toString();
+    }
+
+    public Node fetch(String content) {
+        var value = getValue();
+        if (value instanceof Mark mark) {
+            var s = mark.get("id");
+            if (Objects.equals(s, content)) {
+                return this;
+            }
+        }
+        if (children != null) {
+            for (Node child : children) {
+                var fetch = child.fetch(content);
+                if (fetch != null) {
+                    return fetch;
+                }
+            }
+        }
+        return null;
+    }
+
+    public List<Node> getChildren() {
+        return children;
+    }
+
+    public boolean isText() {
+        var value = getValue();
+        return value instanceof Text;
+    }
+
+    public void addAll(List<Node> list) {
+        if (children == null){
+            this.children = list;
+        } else {
+            this.children.addAll(list);
+        }
+    }
+
+    public String get(String key) {
+        return getValue().get(key);
     }
 }

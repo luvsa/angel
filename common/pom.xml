@@ -16,6 +16,7 @@
     <name>common ${project.version}</name>
     <modules>
         <module>utils</module>
+        <module>core</module>
     </modules>
 
     <dependencies>

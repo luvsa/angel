@@ -1,5 +1,7 @@
 package com.jdy.angel.server.ebook.core;
 
+import com.jdy.angel.server.ebook.core.net.Request;
+
 import java.util.function.Consumer;
 
 /**
@@ -10,12 +12,12 @@ import java.util.function.Consumer;
  */
 public interface Parser {
 
-    static void resource(String file, Consumer<Node> consumer){
+    static void resource(String file, Consumer<Node> consumer) throws Exception {
         Util.RESOURCE.resolve(file, consumer);
     }
 
-    static void remote(String url, Consumer<Node> consumer){
-        Util.REMOTE.resolve(url, consumer);
+    static void remote(Request request, Consumer<Node> consumer) throws Exception {
+        Util.REMOTE.resolve(request.getDomain(), consumer);
     }
 
     /**
@@ -40,6 +42,6 @@ public interface Parser {
 
     void resolve(Consumer<Node> consumer);
 
-    default void resolve(String source,  Consumer<Node> consumer){
+    default void resolve(String source, Consumer<Node> consumer) throws Exception {
     }
 }

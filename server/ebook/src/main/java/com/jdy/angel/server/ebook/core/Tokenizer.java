@@ -1,7 +1,9 @@
 package com.jdy.angel.server.ebook.core;
 
 import com.jdy.angel.server.ebook.core.labels.Label;
+import com.jdy.angel.server.ebook.core.labels.Remark;
 
+import java.util.Objects;
 import java.util.Stack;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -19,6 +21,8 @@ class Tokenizer implements Consumer<String>, Supplier<Node> {
 
     private boolean textual;
 
+    private boolean remark;
+
     private boolean strict;
 
     /**
@@ -35,13 +39,13 @@ class Tokenizer implements Consumer<String>, Supplier<Node> {
                 var index = item.indexOf(Constant.PREFIX, i);
                 if (index < 0) {
                     // ..........
-                    if (item.contains(Constant.SUFFIX)) {
-                        if (strict) {
-                            throw new IllegalArgumentException(row + "  " + item);
-                        }
+                    var e = item.indexOf(Constant.SUFFIX, i);
+                    if (e < 0) {
+                        textual = true;
+                        builder.append(item.substring(i));
+                    } else if (strict) {
+                        throw new IllegalArgumentException(row + "  " + item);
                     }
-                    textual = true;
-                    builder.append(item);
                     return;
                 }
                 // ....... <
@@ -67,18 +71,24 @@ class Tokenizer implements Consumer<String>, Supplier<Node> {
                 }
                 i = to;
             } else {
-                var index = item.indexOf(Constant.SUFFIX);
+                var suffix = (remark ? Constant.REMARK_RIGHT : Constant.EMPTY) + Constant.SUFFIX;
+                var index = item.indexOf(suffix);
                 if (index < 0) {
                     // < .....
                     builder.append(item);
                     return;
                 }
                 // < ....>
-                var sub = builder + item.substring(i, index++).strip();
+                if (remark) {
+                    index += 2;
+                }
+                var strip = item.substring(i, index++).strip();
+                var sub = builder + strip;
                 builder.setLength(0);
                 pop(sub);
                 i = index;
             }
+
         }
         row++;
     }
@@ -94,10 +104,29 @@ class Tokenizer implements Consumer<String>, Supplier<Node> {
             builder.append(s.substring(index));
             return to;
         }
-        // ...... <......> ?
-        sub = s.substring(index, to);
-        pop(sub);
-        return to;
+
+        var other = s.indexOf(Constant.PREFIX, index);
+        if (other < 0 || other > to) {
+            // ...... <......> ?
+            sub = s.substring(index, to);
+            pop(sub);
+            return to;
+        }
+
+        // 注释
+        var txt = s.substring(index, other).strip();
+        if (Objects.equals(txt, Constant.REMARK_LEFT)) {
+            var end = s.indexOf(Constant.REMARK_RIGHT + Constant.SUFFIX, other);
+            if (end < 0) {
+                remark = true;
+                builder.append(s.substring(index));
+                return s.length();
+            }
+            var note = s.substring(index, end);
+            pop(note);
+            return end + 2;
+        }
+        throw new IllegalArgumentException(s);
     }
 
     private void pop(String sub) {
@@ -107,6 +136,11 @@ class Tokenizer implements Consumer<String>, Supplier<Node> {
             return;
         }
         var peek = stack.peek();
+        if (label instanceof Remark) {
+            remark = false;
+            peek.add(label.toNode());
+            return;
+        }
         var type = label.getType();
         switch (type) {
             case END -> peek.add(label.toNode());

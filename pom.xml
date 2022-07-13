@@ -8,6 +8,7 @@
         <module>server</module>
         <module>common</module>
     </modules>
+
     <groupId>com.jdy</groupId>
     <artifactId>angel</artifactId>
     <version>0.0.1</version>
@@ -76,6 +77,12 @@
                 <artifactId>vary</artifactId>
                 <groupId>org.luvsa</groupId>
                 <version>0.0.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.jdy.angel</groupId>
+                <artifactId>common-core</artifactId>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>

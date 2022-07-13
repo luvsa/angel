@@ -7,7 +7,4 @@ package com.jdy.angel.server.ebook.core;
  * @create 2022/7/6 20:47
  */
 public interface Resolver {
-
-
-
 }

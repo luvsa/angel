@@ -6,7 +6,6 @@ package com.jdy.angel.server.ebook.core.labels;
  */
 @Sign("link")
 public class Link extends Mark {
-
     @Override
     public Type getType() {
         return Type.END;

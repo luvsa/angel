@@ -1,37 +1,24 @@
 package com.jdy.angel.server.ebook.service.impl;
 
+import com.jdy.angel.server.ebook.core.Parser;
+import com.jdy.angel.server.ebook.core.net.Request;
 import com.jdy.angel.server.ebook.service.BookService;
-import com.sun.net.httpserver.Authenticator.Success;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.concurrent.Flow.Subscription;
 
 /**
  * @author Aglet
  * @create 2022/7/3 21:29
  */
+@Slf4j
 @Service
 public class BookServiceImpl implements BookService {
 
     @Override
-    public void onSubscribe(Subscription subscription) {
+    public void start(Request domain) throws Exception {
+        Parser.remote(domain, node -> {
+            log.info(node.toString());
+        });
     }
 
-    @Override
-    public void onNext(Success item) {
-//        var body = item.body();
-//        var uri = item.uri();
-//        Resolver.accept(body, o -> {
-//        });
-    }
-
-    @Override
-    public void onError(Throwable throwable) {
-
-    }
-
-    @Override
-    public void onComplete() {
-
-    }
 }

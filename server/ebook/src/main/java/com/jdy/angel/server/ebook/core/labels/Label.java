@@ -1,6 +1,7 @@
 package com.jdy.angel.server.ebook.core.labels;
 
 import com.jdy.angel.server.ebook.core.Constant;
+import com.jdy.angel.server.ebook.core.Listener;
 import com.jdy.angel.server.ebook.core.Node;
 
 
@@ -11,6 +12,10 @@ import com.jdy.angel.server.ebook.core.Node;
 public interface Label {
 
     static Label of(String code) {
+        if (code.startsWith(Constant.REMARK_LEFT) && code.endsWith(Constant.REMARK_RIGHT)) {
+            return new Remark(code);
+        }
+
         var index = code.indexOf(Constant.BLANK);
         if (index < 0) {
             return of(code, Constant.EMPTY);
@@ -66,7 +71,10 @@ public interface Label {
         return times + 1;
     }
 
-    default String getDelimiter(){
+    default String getDelimiter() {
         return "\n";
+    }
+
+    default void register(Listener listener){
     }
 }

@@ -1,11 +1,13 @@
 package com.jdy.angel.server.ebook.core.labels;
 
 
+import com.jdy.angel.server.ebook.core.Node;
 import com.jdy.angel.server.ebook.core.Parser;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -15,14 +17,12 @@ import java.util.concurrent.ExecutionException;
 class TokenizerTest {
 
     @ParameterizedTest
-    @ValueSource(strings = {"https://www.haobiquge.com/read/44822/"})
+    @ValueSource(strings = {"https://www.31xiaoshuo.com/182/182821/73241501.html"})
     void remote(String url) throws ExecutionException, InterruptedException {
         var parser = Parser.fromRemote(url);
         parser.resolve(node -> {
             System.out.println(node);
         });
-
-
     }
 
 
@@ -48,8 +48,26 @@ class TokenizerTest {
     @ValueSource(strings = {"index.html"})
     void read(String file) {
         var parser = Parser.fromResource(file);
+        var list = new ArrayList<Node>();
         parser.resolve(node -> {
-            System.out.println(node);
+            var content = node.fetch("content");
+            var children = content.getChildren();
+            for (var item : children) {
+                var child = item.getChildren();
+                if (child == null|| child.size() != 1){
+                    continue;
+                }
+                var nod = child.get(0);
+                if (nod.isText()){
+                    list.add(item);
+                }
+            }
         });
+        var mark = Div.of("id='content'");
+        var node = mark.toNode();
+        node.addAll(list);
+        // 段落
+
+        System.out.println(node.toString());
     }
 }

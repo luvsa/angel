@@ -73,7 +73,8 @@ class ManagerTest {
             }
             var value = key.value();
 
-            var method = ReflectUtil.search("set", field);
+            var method = ReflectUtil.getSetMethod(field);
+//                    ReflectUtil.searchSet("set", field);
             if (method == null) {
                 continue;
             }

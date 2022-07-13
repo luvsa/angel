@@ -1,8 +1,10 @@
 package com.jdy.angel.utils;
 
 import com.jdy.angel.CharPredicate;
+import com.jdy.angel.Combiner;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
@@ -91,5 +93,46 @@ public final class ArrayUtil {
             return false;
         }
         return !flag;
+    }
+
+
+    public static void descartes(Consumer<int[]> consumer,  int...array){
+        var size = array.length;
+        descartes(array, new Combiner<>() {
+            private int index;
+            private final int[] array = new int[size];
+            @Override
+            public void onNext(Integer item) {
+                array[index] =  item;
+                if (item < size){
+                    index++;
+                }
+            }
+            @Override
+            public void onComplete() {
+                consumer.accept(array);
+            }
+
+            @Override
+            public void reset(int index) {
+                if (index < 0){
+                    index = 0;
+                }
+                this.index = index;
+            }
+        }, 0);
+    }
+
+    private static void descartes(int[] array, Combiner<Integer> consumer, int index){
+        if (index < array.length){
+            var size = array[index];
+            for (int i = 0; i < size; i++) {
+                consumer.onNext(i);
+                descartes(array, consumer, index + 1);
+            }
+        }  else {
+            consumer.onComplete();
+        }
+        consumer.reset(index  - 1);
     }
 }

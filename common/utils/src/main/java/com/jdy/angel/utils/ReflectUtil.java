@@ -1,11 +1,14 @@
 package com.jdy.angel.utils;
 
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Objects;
 
 /**
+ * 反射工具
+ *
  * @author Aglet
  * @create 2022/7/5 14:54
  */
@@ -43,20 +46,35 @@ public final class ReflectUtil {
     }
 
     /**
-     * 查找指定 Field 相关的方法
+     * 查找指定 Field 相关的方法， 设置 {@code field 值}的方法
+     * <p>
+     * 假设 Field 的名称为： name
      *
-     * @param prefix 前缀
-     * @param field  指定 Field
+     * <ul>
+     *     <li>1. <pre>{@code public void setName(String name) {}}</pre></li>
+     *     <li>2. <pre>{@code public void name(String name) {}}</pre></li>
+     * </ul>
+     *
+     * @param field 指定 Field
      * @return 方法
      */
-    public static Method search(String prefix, Field field) {
+    public static Method getSetMethod(Field field) {
         var name = field.getName();
-        var method = prefix + StringUtil.capitalize(name);
+        var method = "set" + StringUtil.capitalize(name);
         var aClass = field.getDeclaringClass();
+        return getSetMethod(aClass, method, field.getType());
+    }
+
+    public static Method getSetMethod(Class<?> source, String name, Class<?>... types) {
         try {
-            return aClass.getMethod(method, field.getType());
+            return source.getMethod(name, types);
         } catch (NoSuchMethodException e) {
             return null;
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> T[] createArray(Class<T> type, int size) {
+        return (T[]) Array.newInstance(type, size);
     }
 }

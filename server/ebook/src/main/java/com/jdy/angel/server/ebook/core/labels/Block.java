@@ -12,6 +12,8 @@ abstract class Block implements Label {
 
     protected String name;
 
+    protected boolean tail;
+
     @Override
     public void setName(String name) {
         this.name = name;
@@ -26,7 +28,8 @@ abstract class Block implements Label {
     public boolean match(Label label) {
         if (label instanceof Block other) {
             var name = other.getName();
-            return Objects.equals(name, this.name);
+            tail = Objects.equals(name, this.name);
+            return tail;
         }
         return false;
     }

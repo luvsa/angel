@@ -1,19 +1,23 @@
 package com.jdy.angel.server.ebook.core.labels;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Stack;
-import java.util.StringJoiner;
+import com.jdy.angel.server.ebook.core.Constant;
+import com.jdy.angel.server.ebook.core.Listener;
+
+import java.util.*;
+
+
 
 /**
  * @author Aglet
  * @create 2022/7/5 20:23
  */
-class Mark extends Block {
+public class Mark extends Block {
 
     protected Map<String, String> attributes;
 
     private boolean finished;
+
+    private final List<Listener> listeners = new ArrayList<>();
 
     @Override
     public void setProperty(String property) {
@@ -52,6 +56,11 @@ class Mark extends Block {
             }
             try {
                 var value = property.substring(index + 1, ++from).strip();
+                for (var item: listeners) {
+                    if (item.test(key)){
+                        item.register(value, this);
+                    }
+                }
                 attributes.put(key, value);
             } catch (Exception e) {
 //                System.out.println(property);
@@ -62,14 +71,8 @@ class Mark extends Block {
 
     @Override
     public String getPrefix() {
-        return toString();
-    }
-
-
-    @Override
-    public String toString() {
-        var suffix = finished ? " />" : ">";
-        var joiner = new StringJoiner(" ", "<", suffix);
+        var suffix = finished ? " />" : Constant.SUFFIX;
+        var joiner = new StringJoiner(Constant.BLANK, Constant.PREFIX, suffix);
         joiner.add(name);
         if (attributes != null) {
             attributes.forEach((s, s2) -> joiner.add(s + "=" + s2));
@@ -78,7 +81,21 @@ class Mark extends Block {
     }
 
     @Override
+    public void register(Listener listener) {
+        listeners.add(listener);
+    }
+
+    @Override
+    public String toString() {
+        var tail = this.tail ? Constant.PREFIX + Constant.DIV + name + Constant.SUFFIX : Constant.EMPTY;
+        return getPrefix() + tail;
+    }
+
+    @Override
     public String get(String key) {
+        if (attributes == null) {
+            return null;
+        }
         var s = attributes.get(key);
         if (s == null) {
             return null;
@@ -88,7 +105,7 @@ class Mark extends Block {
 
     @Override
     public Type getType() {
-        if (finished){
+        if (finished) {
             return Type.END;
         }
         return super.getType();
