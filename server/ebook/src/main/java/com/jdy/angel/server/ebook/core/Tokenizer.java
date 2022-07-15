@@ -13,7 +13,6 @@ import java.util.function.Supplier;
  * @create 2022/7/7 14:43
  */
 class Tokenizer implements Consumer<String>, Supplier<Node> {
-
     /**
      * 读取字符串
      */

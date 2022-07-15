@@ -171,8 +171,8 @@ public final class FileUtil {
             try {
                 var index = name.lastIndexOf(".");
                 var className = name.substring(0, index);
-                var clazz1 = Class.forName(className);
-                consumer.accept(clazz1);
+                var clas = Class.forName(className);
+                consumer.accept(clas);
             } catch (ClassNotFoundException e) {
                 System.err.println(name);
             }

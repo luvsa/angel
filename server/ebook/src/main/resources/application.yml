@@ -1,3 +1,6 @@
+server:
+  port: 8081
+
 spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss

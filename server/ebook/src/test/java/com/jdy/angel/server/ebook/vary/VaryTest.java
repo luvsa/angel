@@ -13,6 +13,7 @@ class VaryTest {
 
     @Test
     void reqToArticle(){
+
         var request = new Request() {
             @Override
             public String getDomain() {

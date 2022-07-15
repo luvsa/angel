@@ -15,7 +15,6 @@ public interface Label {
         if (code.startsWith(Constant.REMARK_LEFT) && code.endsWith(Constant.REMARK_RIGHT)) {
             return new Remark(code);
         }
-
         var index = code.indexOf(Constant.BLANK);
         if (index < 0) {
             return of(code, Constant.EMPTY);

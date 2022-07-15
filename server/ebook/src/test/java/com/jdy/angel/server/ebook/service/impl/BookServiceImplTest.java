@@ -26,6 +26,9 @@ class BookServiceImplTest {
     void parser() throws Exception {
         Parser.resource("book.html", node -> {
 //            log.info(node.toString());
+
+
+            //目录
             var children = node.fetch("list").getChildren().get(0).getChildren();
             for (var child : children) {
                 var chi = child.getChildren();

@@ -5,8 +5,6 @@ import com.jdy.angel.server.ebook.core.Listener;
 
 import java.util.*;
 
-
-
 /**
  * @author Aglet
  * @create 2022/7/5 20:23
@@ -65,7 +63,6 @@ public class Mark extends Block {
             } catch (Exception e) {
 //                System.out.println(property);
             }
-
         } while (true);
     }
 

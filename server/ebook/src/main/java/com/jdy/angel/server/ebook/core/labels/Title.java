@@ -6,5 +6,4 @@ package com.jdy.angel.server.ebook.core.labels;
  */
 @Sign("title")
 public class Title extends Mark {
-
 }
