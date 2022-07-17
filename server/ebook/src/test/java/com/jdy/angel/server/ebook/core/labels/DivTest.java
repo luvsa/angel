@@ -1,8 +1,7 @@
 package com.jdy.angel.server.ebook.core.labels;
 
+import com.jdy.angel.ebook.core.labels.Div;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Aglet

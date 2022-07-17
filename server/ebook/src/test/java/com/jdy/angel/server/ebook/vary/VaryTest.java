@@ -1,7 +1,7 @@
 package com.jdy.angel.server.ebook.vary;
 
-import com.jdy.angel.server.ebook.core.net.Request;
-import com.jdy.angel.server.ebook.entity.Article;
+import com.jdy.angel.ebook.core.net.Request;
+import com.jdy.angel.ebook.entity.Article;
 import org.junit.jupiter.api.Test;
 import org.luvsa.vary.Vary;
 

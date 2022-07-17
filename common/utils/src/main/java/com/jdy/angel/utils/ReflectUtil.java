@@ -1,10 +1,11 @@
 package com.jdy.angel.utils;
 
 
-import java.lang.reflect.Array;
+import org.luvsa.reflect.Reflections;
+import org.luvsa.reflect.Reflects;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Objects;
 
 /**
  * 反射工具
@@ -25,24 +26,7 @@ public final class ReflectUtil {
      * @return 调用者的class对象
      */
     public static Class<?> getCallerClass(Class<?> clazz) {
-        var found = false;
-        var name = clazz.getName();
-        var elements = Thread.currentThread().getStackTrace();
-        for (StackTraceElement item : elements) {
-            var className = item.getClassName();
-            if (Objects.equals(className, name)) {
-                found = true;
-                continue;
-            }
-            if (found) {
-                try {
-                    return Class.forName(className);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-        throw new IllegalArgumentException("无法找到调用 " + clazz + " 的类对象！");
+        return Reflections.getCallerClass(clazz);
     }
 
     /**
@@ -73,8 +57,7 @@ public final class ReflectUtil {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public static <T> T[] createArray(Class<T> type, int size) {
-        return (T[]) Array.newInstance(type, size);
+        return Reflects.createArray(type, size);
     }
 }

@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.jdy.angel.ibatis.security.IbatisAutoConfiguration,\
+  com.jdy.angel.ibatis.incrementer.IbatisIdentifierGenerator,\
+  com.jdy.angel.ibatis.handlers.IbatisMetaObjectHandler

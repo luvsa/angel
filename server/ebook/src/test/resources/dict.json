@@ -1,0 +1,113 @@
+[
+  {
+    "name": "Type",
+    "alias": "文学类型",
+    "items": [
+      {
+        "label": "novel",
+        "value": "小说"
+      },
+      {
+        "label": "poem",
+        "value": "古诗词"
+      }
+    ]
+  },
+
+  {
+    "name": "Status",
+    "alias": "状态",
+    "items": [
+      {
+        "label": "连载中",
+        "value": 1
+      },
+      {
+        "label": "已完结",
+        "value": 2
+      }
+    ]
+  },
+  {
+    "name": "Kind",
+    "alias": "内容类型",
+    "items": [
+      {
+        "label": "玄幻",
+        "value": 1
+      },
+      {
+        "label": "奇幻",
+        "value": 2
+      },
+      {
+        "label": "武侠",
+        "value": 3
+      },
+      {
+        "label": "修真",
+        "value": 4
+      },
+      {
+        "label": "言情",
+        "value": 6
+      },
+      {
+        "label": "都市",
+        "value": 5
+      },
+      {
+        "label": "军事",
+        "value": 7
+      },
+      {
+        "label": "战争",
+        "value": 8
+      },
+      {
+        "label": "游戏",
+        "value": 9
+      },
+      {
+        "label": "竞技",
+        "value": 10
+      },
+      {
+        "label": "悬疑",
+        "value": 12
+      },
+      {
+        "label": "科幻",
+        "value": 11
+      },
+      {
+        "label": "惊悚",
+        "value": 13
+      },
+      {
+        "label": "灵异",
+        "value": 14
+      },
+      {
+        "label": "穿越",
+        "value": 15
+      },
+      {
+        "label": "重生",
+        "value": 16
+      },
+      {
+        "label": "豪门总裁",
+        "value": 18
+      },
+      {
+        "label": "历史",
+        "value": 17
+      },
+      {
+        "label": "综合其他",
+        "value": -1
+      }
+    ]
+  }
+]

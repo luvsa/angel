@@ -2,6 +2,7 @@ package com.jdy.angel.server.ebook.core;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jdy.angel.ebook.core.Manager;
 import com.jdy.angel.utils.ArrayUtil;
 import com.jdy.angel.utils.FileUtil;
 import com.jdy.angel.utils.ReflectUtil;

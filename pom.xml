@@ -75,13 +75,25 @@
 
             <dependency>
                 <artifactId>vary</artifactId>
-                <groupId>org.luvsa</groupId>
+                <groupId>cn.luvsa</groupId>
                 <version>0.0.1</version>
             </dependency>
 
             <dependency>
                 <groupId>com.jdy.angel</groupId>
                 <artifactId>common-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.jdy.angel</groupId>
+                <artifactId>common-data</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.jdy.angel</groupId>
+                <artifactId>common-ibatis</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -111,12 +123,28 @@
                 <artifactId>mybatis-plus-extension</artifactId>
                 <version>${mybatis-plus.version}</version>
             </dependency>
+
+            <!--     MyBatis-plus 相关       -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-core</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+
+
+            <!--     MyBatis-plus 相关       -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-generator</artifactId>
+                <version>3.5.0</version>
+            </dependency>
+
+
             <!--    对象转换器   -->
             <dependency>
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct</artifactId>
                 <version>${mapstruct.version}</version>
-
             </dependency>
             <!--    对象转换器   -->
             <dependency>
@@ -131,8 +159,6 @@
                 <artifactId>mapstruct-processor</artifactId>
                 <version>${mapstruct.version}</version>
             </dependency>
-
-
         </dependencies>
     </dependencyManagement>
 
