@@ -1,6 +1,7 @@
 package com.jdy.angel.ebook.core;
 
 import com.jdy.angel.utils.FileUtil;
+import lombok.extern.slf4j.Slf4j;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -13,6 +14,7 @@ import java.util.function.Consumer;
  * @author Aglet
  * @create 2022/7/7 14:31
  */
+@Slf4j
 class Remote implements Parser {
 
     private final HttpClient client = HttpClient.newHttpClient();
@@ -43,16 +45,21 @@ class Remote implements Parser {
         var request = HttpRequest.newBuilder(uri)
                 .timeout(Duration.ofMinutes(2))
                 .build();
-
         var handler = HttpResponse.BodyHandlers.ofInputStream();
-        client.sendAsync(request, handler).whenCompleteAsync((response, throwable) -> {
+        client.sendAsync(request, handler).handleAsync((response, throwable) -> {
             if (throwable == null) {
                 FileUtil.read(response.body(), tokenizer);
                 var node = tokenizer.get();
                 node.set("origin", uri);
-                consumer.accept(node);
+                return node;
             }
             throw new RuntimeException(throwable);
+        }).whenCompleteAsync((node, throwable) -> {
+            if (throwable == null) {
+                consumer.accept(node);
+                return;
+            }
+            log.error("出现网络请求或解析的错误！", throwable);
         });
     }
 }

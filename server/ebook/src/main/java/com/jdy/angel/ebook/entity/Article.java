@@ -1,5 +1,6 @@
 package com.jdy.angel.ebook.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.jdy.angel.data.Entity;
 import lombok.Data;
@@ -28,6 +29,26 @@ public class Article extends Entity {
      */
     private Integer priority;
 
+
+    @TableField("Book_ID")
     private String book;
 
+    /**
+     * 存在
+     */
+    private Boolean enable;
+
+    /**
+     * 请求的 url
+     */
+    private String path;
+
+    /**
+     * 前一章
+     */
+    @TableField(exist = false)
+    private String prev;
+
+    @TableField(exist = false)
+    private String next;
 }

@@ -2,8 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${title}"></title>
+    <title th:text="${article.title}"></title>
 </head>
 <body>
+
+<div class="title">
+    <h1 th:text="${article.title}"></h1>
+</div>
+<div class="content" th:text="${content}"></div>
 </body>
 </html>

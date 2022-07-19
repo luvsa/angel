@@ -10,6 +10,9 @@ import java.io.Serial;
 import java.util.Collection;
 
 /**
+ * predictable
+ * Dictionary
+ *
  * @author Dale
  * @create 2021/11/8 14:57
  */

@@ -4,9 +4,9 @@ create table Sys_Dict_Item
     ID          char(32)             not null comment '字典项标识' primary key,
 
     Dict_ID     char(32)             not null comment '字典标识',
-
-    Label       varchar(128)         not null comment '前端显示名称',
-    Value       varchar(128)         not null comment '前端数据的值',
+    Name       varchar(32)         not null comment '前端显示名称0',
+    Label       varchar(32)         not null comment '前端显示名称',
+    Value       varchar(32)         not null comment '前端数据的值',
 
     Create_Time datetime             not null comment '数据创建时间',
     Update_Time datetime             null comment '数据更新时间',

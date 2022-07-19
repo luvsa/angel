@@ -1,6 +1,7 @@
 package com.jdy.angel.ebook.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.jdy.angel.core.Dictionary;
 import com.jdy.angel.data.Entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -32,20 +33,23 @@ public class Book extends Entity {
 	/**
 	 * 图书类型
 	 */
+	@Dictionary(capital = true)
 	private int type;
 
 	/**
 	 * 内容类型
 	 */
-	private String kind;
+	@Dictionary(capital = true)
+	private int kind;
 
 	/**
 	 * 图书简介
 	 */
-	private String desc;
+	private String description;
 
 	/**
 	 * 图书状态
 	 */
-	private String status;
+	@Dictionary(capital = true)
+	private int status;
 }

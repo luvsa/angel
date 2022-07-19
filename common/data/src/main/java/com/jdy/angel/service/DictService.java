@@ -8,6 +8,10 @@ import org.luvsa.vary.Vary;
  */
 public interface DictService {
 
+//	static <T> T adjust(Dictionary dictionary, String value, Class<T> type) {
+//
+//	}
+
 	default <T> T search(String name, String label, Class<T> clazz) {
 		var search = search(name, label);
 		if (search == null) {

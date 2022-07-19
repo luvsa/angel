@@ -34,6 +34,17 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, SysDict> implements
 			}
 			return temp;
 		});
+		var length = label.length();
+		if (length > 2){
+			for (int i = 0, j = 2; j < length; i++, j++) {
+				var sub = label.substring(i, j);
+				var s = map.get(sub);
+				if (s == null || s.isBlank()){
+					continue;
+				}
+				return s;
+			}
+		}
 		return map.get(label);
 	}
 
@@ -56,5 +67,4 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, SysDict> implements
 			}
 		});
 	}
-
 }

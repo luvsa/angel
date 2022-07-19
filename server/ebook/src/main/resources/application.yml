@@ -9,9 +9,9 @@ spring:
 
   datasource:
     name: ebook
-    url: jdbc:mysql://127.0.0.1:3306/ebook?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=UTC&allowPublicvalueRetrieval=true
+    url: jdbc:mysql://127.0.0.1:3306/ebook?autoReconnect=true&useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=CONVERT_TO_NULL&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&allowPublicvalueRetrieval=true
     username: root
-    password: 123456
+    password: 201226
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:

@@ -57,6 +57,5 @@ public interface DictMapper extends BaseMapper<SysDict> {
 	 * 数据字典 的Item 项 mybatis Mapper 接口
 	 */
 	interface DictItemMapper extends BaseMapper<SysDict.Item> {
-
 	}
 }
